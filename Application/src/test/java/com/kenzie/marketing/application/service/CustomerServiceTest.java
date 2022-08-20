@@ -8,6 +8,7 @@ import com.kenzie.marketing.application.repositories.model.CustomerRecord;
 
 import com.kenzie.marketing.referral.model.CustomerReferrals;
 import com.kenzie.marketing.referral.model.LeaderboardEntry;
+import com.kenzie.marketing.referral.model.Referral;
 import com.kenzie.marketing.referral.model.client.ReferralServiceClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -287,18 +288,20 @@ public class CustomerServiceTest {
     @Test
     void getReferrals_id() {
         // GIVEN
+        String customerId = "customer id";
+        Optional<CustomerRecord> record = customerRepository.findById(customerId);
+        CustomerRecord rc = new CustomerRecord();
+        rc.setId(customerId);
 
-        CustomerRecord record1 = new CustomerRecord();
-        record1.setId(randomUUID().toString());
-        record1.setName("customername1");
-        record1.setDateCreated("recorddate2");
-        String customerId = "Id";
+        customerRepository.save(rc);
 
+        when(customerRepository.findById(customerId)).thenReturn(Optional.of(rc));
 
+        List<CustomerResponse> responses = customerService.getReferrals(customerId);
 
-        when(customerRepository.findById(customerId)).thenReturn(Optional.of(record1));
+        when(customerService.getReferrals(customerId)).thenReturn(responses);
 
-        //when(referralServiceClient.getDirectReferrals(customerId)).thenReturn(null);
+        when(customerRepository.findById(customerId)).thenReturn(record);
     }
 
 
@@ -317,11 +320,31 @@ public class CustomerServiceTest {
         request.setReferrerId(Optional.empty());
         customerService.addNewCustomer(request);
 
-        CustomerReferrals referrals = referralServiceClient.getReferralSummary(customerId);
+        CustomerReferrals referrals = mock(CustomerReferrals.class);
 
-        Double calculationResult = 0.0;
+        List<Referral> firstReferrals = referralServiceClient.getDirectReferrals(customerId);
+        referrals.setNumFirstLevelReferrals(firstReferrals.size());
+
+        int firstLevelReferrals = 0;
+        int secondLevelreferrals = 0;
+
+        for (Referral referral: firstReferrals) {
+            firstLevelReferrals += referralServiceClient.getDirectReferrals(referral.getCustomerId()).size();
+            for (Referral thirdReferral : referralServiceClient.getDirectReferrals(referral.getCustomerId())) {
+                secondLevelreferrals += referralServiceClient.getDirectReferrals(thirdReferral.getCustomerId()).size();
+            }
+        }
+
+        referrals.setNumSecondLevelReferrals(firstLevelReferrals);
+        referrals.setNumThirdLevelReferrals(secondLevelreferrals);
 
         when(referralServiceClient.getReferralSummary(customerId)).thenReturn(referrals);
+
+        CustomerReferrals referrals2 = referralServiceClient.getReferralSummary(customerId);
+
+        when(customerService.calculateBonus(customerId)).thenReturn(any());
+
+        when(referralServiceClient.getReferralSummary(customerId)).thenReturn(referrals2);
     }
 
     @Test

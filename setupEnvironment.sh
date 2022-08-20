@@ -10,7 +10,7 @@
 
 # Fill out the following values
 # The path of your repo on github.  Don't but the whole URL, just the part after github.com/
-export UNIT_FIVE_REPO_NAME=ATA-Unit-Five-Project-Development
+export UNIT_FIVE_REPO_NAME=ata-unit-five-project-bmamadiev
 export GITHUB_USERNAME=bmamadiev
 
 # Do not modify the rest of these unless you have been instructed to do so.
@@ -20,5 +20,3 @@ export UNIT_FIVE_ARTIFACT_BUCKET=$UNIT_FIVE_PROJECT_NAME-$GITHUB_USERNAME-artifa
 export UNIT_FIVE_APPLICATION_STACK=$UNIT_FIVE_PROJECT_NAME-$GITHUB_USERNAME-application
 export UNIT_FIVE_SERVICE_STACK=$UNIT_FIVE_PROJECT_NAME-$GITHUB_USERNAME-service
 export UNIT_FIVE_SERVICE_STACK_DEV=$UNIT_FIVE_PROJECT_NAME-$GITHUB_USERNAME-service-dev
-
-export JAVA_HOME=/Users/behzodmamadiev/Library/Java/JavaVirtualMachines/corretto-16.0.2/Contents/Home

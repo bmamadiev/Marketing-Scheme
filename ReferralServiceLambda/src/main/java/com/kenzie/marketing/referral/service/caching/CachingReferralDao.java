@@ -89,10 +89,8 @@ public class CachingReferralDao implements ReferralDao {
     }
     // Setting value
     private void addToCache(List<ReferralRecord> records) {
-        String referrerId = "";
-        for (ReferralRecord record : records) {
-            referrerId = record.getReferrerId();
-        }
+        String referrerId = records.get(0).getReferrerId();
+
         String key = String.format(REFERRAL_KEY, referrerId);
         cacheClient.setValue(
                 key,

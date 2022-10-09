@@ -1,37 +1,7 @@
-# ATA-Unit-Five-Project-Solution
+# Kenzie Marketing Scheme
 
-Follow the instructions on lms.kenzie.academy
+This app offers a marketing scheme where the more customers someone refers, and the more customers those customers refer, the higher the bonus the original customer receives.
 
-### To create the Referral table in DynamoDB:
+For example, say that you refer ten people. Those ten people each refer another ten people. You have ten direct referrals and one hundred "second-level" referrals. If those one hundred people refer another ten people each, you have one thousand "third-level" referrals.
 
-You must do this for the ReferralServiceLambda to work!
-
-```
-aws cloudformation create-stack --stack-name referral-table --template-body file://ReferralTable.yaml --capabilities CAPABILITY_IAM
-```
-
-### To deploy the CI/CD Pipeline
-
-Fill out `setupEnvironment.sh` with your Github Repo name.
-
-Run `./createPipeline.sh`
-
-To teardown the pipeline, run `./cleanupPipeline.sh`
-
-
-### To run local Redis:
-
-First, run
-```
-./runLocalRedis.sh
-```
-
-### To create your development deployment:
-
-Run `deployDev.sh`.  This might take 20 minutes...
-
-To teardown the deployment, run `./cleanupDev.sh`.
-
-Do not leave your development deployment running for long periods of time when you are not using it!  That will quickly eat up your AWS budget.
-
-Stop your session on Vocareum to pause the dev deployment without having to tear it down. 
+We need to build this scheme.
